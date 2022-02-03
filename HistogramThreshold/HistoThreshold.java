@@ -8,22 +8,24 @@ public class HistoThreshold {
     // Computes a Histogram of the pixel intensity values of provided image
     public static void computeHist(String fileName){
         try{
-        Scanner inFile1 = new Scanner(new FileReader(fileName));
-        String header = inFile1.nextLine();
-        // ** Step 1: get maxVal, numRows, numColumns, minVal ** //
-        maxVal = Integer.parseInt(header.substring(9,11)); 
-        numRows = Integer.parseInt(header.substring(1,3));
-        numColumns = Integer.parseInt(header.substring(4,6));
-        minVal = Integer.parseInt(header.substring(7,8));
-        // ** Step 2: dynamically allocate histAry ** //
-        histAry = new int[maxVal + 1];
+			Scanner inFile1 = new Scanner(new FileReader(fileName));
+			String header = inFile1.nextLine();
+			// ** Step 1: get maxVal, numRows, numColumns, minVal ** //
+			maxVal = Integer.parseInt(header.substring(9,11)); 
+			numRows = Integer.parseInt(header.substring(1,3));
+			numColumns = Integer.parseInt(header.substring(4,6));
+			minVal = Integer.parseInt(header.substring(7,8));
+			// ** Step 2: dynamically allocate histAry ** //
+			histAry = new int[maxVal + 1];
         while(inFile1.hasNext()){
             histAry[inFile1.nextInt()]++;
         }
-        inFile1.close();
+        
+		inFile1.close();
         System.out.println("Sucessfully computed histAry");
-        } catch (IOException e) {
-
+        
+		} catch (IOException e) {
+			System.out.println("Error Occured");
         }
        
     }
@@ -31,18 +33,20 @@ public class HistoThreshold {
     // ~Prints the Header and Pairs <i, j> in outFile1~ //
     public static void printHist(String fileName){
         try {
-            FileWriter outPut1Writer = new FileWriter(fileName);
-            outPut1Writer.write(numRows + " " + numColumns + " " + minVal + " " + maxVal + "\n");
-            for(int i = 0;i < histAry.length;i++){
+				FileWriter outPut1Writer = new FileWriter(fileName);
+				outPut1Writer.write(numRows + " " + numColumns + " " + minVal + " " + maxVal + "\n");
+            
+			for(int i = 0;i < histAry.length;i++){
                 outPut1Writer.write(i + " " + histAry[i]+ "\n");
             }
-            outPut1Writer.close();
-            System.out.println("Successfully wrote outPut1");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+            
+	    outPut1Writer.close();
+        System.out.println("Successfully wrote outPut1");
         
+		} catch (IOException e) {
+				System.out.println("An error occurred.");
+				e.printStackTrace();
+			}
     }
 
     // ~Prints the "Pretty output" of the Histogram~ // 
@@ -120,13 +124,13 @@ public class HistoThreshold {
             // **  Step 0: open input file use args[0], threshold value args[1] ** //
             String inFile = new String(args[0]);
             
-            thresholdValue = Integer.parseInt(args[1]);
-            String outFile1 = new String(args[2]);
-            String outFile2 = new String(args[3]);
-            String outFile3String = new String(args[4]);
-            String outFile4String = new String(args[5]);
-            FileWriter outFile3 = new FileWriter(outFile3String);
-            FileWriter outFile4 = new FileWriter(outFile4String);
+			thresholdValue = Integer.parseInt(args[1]);
+			String outFile1 = new String(args[2]);
+			String outFile2 = new String(args[3]);
+			String outFile3String = new String(args[4]);
+			String outFile4String = new String(args[5]);
+			FileWriter outFile3 = new FileWriter(outFile3String);
+			FileWriter outFile4 = new FileWriter(outFile4String);
 
             /////////////////////////////////////////////////////////////////////
             //                                                                 //     
