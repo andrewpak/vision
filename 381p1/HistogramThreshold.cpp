@@ -4,6 +4,13 @@
 int main(int argc, char *argv[]){
 	
 	std::ifstream inFile(argv[1]);
+	int threshVal = std::atoi(argv[2]);
+
+	std::cout << "This is threshVal: " << threshVal << std::endl;
+	
+	std::ofstream outFile1;
+	outFile1.open("outFile1.txt");
+
 
 	int numRows, numCols, minVal, maxVal;
 	 
@@ -16,9 +23,7 @@ int main(int argc, char *argv[]){
 
 	int histAry[maxVal + 1];
 	for(int i = 0;i < maxVal + 1;i++){
-
 		histAry[i] = 0;
-
 	}
 
 	for(int i = 0;i < maxVal + 1;i++){
@@ -32,25 +37,34 @@ int main(int argc, char *argv[]){
 			inFile >> image[i][j];
 		}
 	}
-		std::cout<< std::endl;
+	
+	// ///////////////////////////////// //
+	// checking if I got the right image //
+	// ///////////////////////////////// //
+	
+	std::cout << std::endl;
+	
 	for(int i = 0;i < numRows;i++){
 		for(int j = 0;j < numCols;j++){
 			std::cout << image[i][j] << " ";
 		}
 		std::cout << std::endl;
 	}
+	
+	///////////////////////////////////////
 
 	for(int i = 0;i < numRows;i++){
 		for(int j = 0;j < numCols;j++){
 				histAry[image[i][j]]++;
 		}
 	}
+	
 	std::cout << "This is the histAry: " << std::endl;
+	
 	for(int i = 0;i <= maxVal;i++){
 		std::cout << histAry[i] << " ";
 	}
 
-
-
-
+	outFile1.close();
+	return 0;
 }
