@@ -23,12 +23,14 @@ void computeHist(std::ifstream &file){
 }
 
 void threshold(std::ifstream &file, std::ofstream &outFile3, std::ofstream &outFile4, int thrVal){
+	
 	file >> numRows >> numCols >> minVal >> maxVal;
 	minVal = 0;
 	maxVal = 1;
 		
 	outFile3 << numRows << " " << numCols << " " << minVal << " " << maxVal << std::endl;
 	outFile4 << numRows << " " << numCols << " " << minVal << " " << maxVal << std::endl;
+	
 	for(int i = 0;i < numRows;++i){
 		for(int j = 0;j < numCols;++j){
 			int pixelVal;
@@ -136,7 +138,8 @@ int main(int argc, char *argv[]){
 
 	inFile.close();
 	inFile.open(fileName);
-		
+	outFile3 << "The threshold value used is " << thrVal << std::endl;		
+	outFile4 << "The threshold value used is " << thrVal << std::endl;
 	threshold(inFile, outFile3, outFile4, thrVal);
 
 	// collect some trash, close files
