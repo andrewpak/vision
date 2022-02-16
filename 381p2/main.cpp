@@ -86,6 +86,20 @@ void mirrorFraming(int **ary) {
 
 }
 
+
+void imgReformat(int **array, int newMin, int newMax, std::ofstream outFile){
+		
+
+}
+// averaging
+// x' = (a + b + c + x + f + g + h) / 9
+void computeGauss(){
+
+
+}
+
+// ** Driver code ** //
+
 int main (int argc, char **argv){
 
 	std::cout << "Starting Morphology...." << std::endl;	
@@ -123,6 +137,8 @@ int main (int argc, char **argv){
 	// ** remove this later ** //
 	// checking if got the right mask //
 	check2dAry(maskAry, maskRows, maskCols);
+	 
+	std::cout << std::endl;
 
 	loadImage(mirrorFramedAry, inFile);
 
