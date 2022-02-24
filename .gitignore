@@ -1,3 +1,4 @@
 # Ignore all lecture notes
 
 ComputerVision/
+build/
