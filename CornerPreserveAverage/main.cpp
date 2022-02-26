@@ -22,7 +22,13 @@ class imageProcessing {
 		int getNumCols();
 		int getMinVal();
 		int getMaxVal();
+	
 
+		// some helper functions for debugging //
+
+		void check2dAry(int **array, int rows, int cols);
+		void destroy1dAry(int *array);
+		void destroy2dAry(int **array);
 };
 
 imageProcessing::imageProcessing(std::ifstream &inFile){
@@ -30,6 +36,9 @@ imageProcessing::imageProcessing(std::ifstream &inFile){
 	inFile >> this->numRows >> this->numCols >> this->minVal >> this->maxVal;
 
 	std::cout << this->numRows << " " << this->numCols << " " << this->minVal << " " << this->maxVal << std::endl;
+
+	
+
 }
 
 void imageProcessing::setNumRows(int n){
@@ -62,6 +71,29 @@ int imageProcessing::getMinVal(){
 
 int imageProcessing::getMaxVal(){
 	return this->maxVal;
+}
+
+// helper functions .. //
+
+void imageProcessing::check2dAry(int **array, int rows, int cols){
+	for(int i = 0;i < rows;i++){
+		for(int j = 0;j < cols;j++){
+			if(array[i][j] < 10){
+				std::cout << array[i][j] << "  ";
+			} else {
+				std::cout <<array[i][j] << " ";
+			}
+		}
+		std::cout << std::endl;
+	}
+}
+
+void imageProcessing::destroy1dAry(int *array){
+
+}
+
+void imageProcessing::destroy2dAry(int **array){
+
 }
 
 int main(int argc, char **argv) {
