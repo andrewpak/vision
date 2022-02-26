@@ -6,6 +6,11 @@ class imageProcessing {
 	
 	int numRows, numCols, minVal, maxVal;
 
+	int **framAry;
+	int **outAry;
+	int **thrAry;
+	int thrVal;
+	int mask[8][5][5];
 
 	public:
 		imageProcessing(std::ifstream &inFile);
