@@ -24,7 +24,9 @@ class imageProcessing {
 		int **getFrameAry();	
 		int **getOutAry();
 		int **getThrAry();
-		void threshold();
+		void threshold(int **array, int **threshAry, int thrVal);
+		void cornerPreserveAvg();
+		int convolution5x5(int row, int col, int maskIdx);
 		void setNumRows(int);
 		void setNumCols(int);
 		void setMinVal(int);
@@ -234,9 +236,73 @@ void imageProcessing::imgReformat(int **array, int newMin, int newMax, std::ofst
 }
 
 
-void imageProcessing::threshold(){
+void imageProcessing::threshold(int **array, int **threshAry, int thrVal){
+	for(int i = 2;i < numRows + 2;i++){
+		for(int j = 2;j < numCols + 2;j++){
+			if(array[i][j] >= thrVal){
+				threshAry[i][j] = 1;
+			} else {
+				threshAry[i][j] = 0;
+			}
+		}
+	}
+
+}
+
+void imageProcessing::cornerPreserveAvg(){
+		
+	int r = 2;
+	int c = 2;
+	
+	while(r < numRows + 2){
+		while(c < numCols + 2){
+		int maskIndex = 0;
+		int minAvg = frameAry[r][c];
+		int minDiff = 9999;
+			while(maskIndex < 8){
+
+				int result = convolution5x5(r - 2, c - 2, maskIndex) / 9;
+				int diff = std::abs(result - frameAry[r][c]);
+
+				if(diff < minDiff){
+					minDiff = diff;
+					minAvg = result;
+				}
+				
+				maskIndex++;
+				
+				}
+
+				outAry[r][c] = minAvg;
+
+				c++;
+
+//				std::cout << "this is c in corner preserve " << c << std::endl;
+				}
+				c = 2;
+				r++;	
+//				std::cout << "this is r in corner preserve " << r << std::endl;
+		}
 
 
+}
+
+	
+
+	
+
+int imageProcessing::convolution5x5(int row, int col, int maskIdx){
+	int sum = 0;
+	for(int i = 0;i < 5;i++){
+		for(int j = 0;j < 5;j++){
+			int product = mask[maskIdx][i][j] * frameAry[row][col];
+			sum += product;
+			col++;
+		}
+		col -= 5;
+		row++;
+	}
+	return sum;
 }
 
 ///
@@ -376,7 +442,14 @@ int main(int argc, char **argv) {
 	myImage.loadMasks();
 
 	myImage.imgReformat(myImage.getFrameAry(), myImage.getMinVal(), myImage.getMaxVal(), outFile1);
+	myImage.threshold(myImage.getFrameAry(), myImage.getThrAry(), myImage.getThrVal());
+	myImage.imgReformat(myImage.getThrAry(), 0, 1, outFile1);
+
+	myImage.cornerPreserveAvg();
+	
 	myImage.imgReformat(myImage.getOutAry(), 0, 0, outFile1);
+	myImage.threshold(myImage.getOutAry(), myImage.getThrAry(), myImage.getThrVal());
+	myImage.imgReformat(myImage.getThrAry(), 0, 1, outFile1);
 	myImage.destroy2dArys();
 	outFile1.close();
 	outFile2.close();
