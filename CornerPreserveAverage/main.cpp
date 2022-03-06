@@ -151,14 +151,14 @@ void imageProcessing::mirrorFraming(){
 
 
 void imageProcessing::loadMasks(){
-	std::ifstream m1("../M1.txt");
-	std::ifstream m2("../M2.txt");
-	std::ifstream m3("../M3.txt");
-	std::ifstream m4("../M4.txt");
-	std::ifstream m5("../M5.txt");
-	std::ifstream m6("../M6.txt");
-	std::ifstream m7("../M7.txt");
-	std::ifstream m8("../M8.txt");
+	std::ifstream m1("M1.txt");
+	std::ifstream m2("M2.txt");
+	std::ifstream m3("M3.txt");
+	std::ifstream m4("M4.txt");
+	std::ifstream m5("M5.txt");
+	std::ifstream m6("M6.txt");
+	std::ifstream m7("M7.txt");
+	std::ifstream m8("M8.txt");
 
 	int r, c, min, max;
 	m1 >> r >> c >> min >> max;
@@ -447,9 +447,13 @@ int main(int argc, char **argv) {
 
 	myImage.cornerPreserveAvg();
 	
-	myImage.imgReformat(myImage.getOutAry(), 0, 0, outFile1);
+	myImage.imgReformat(myImage.getOutAry(), myImage.getMinVal(), myImage.getMaxVal(), outFile1);
 	myImage.threshold(myImage.getOutAry(), myImage.getThrAry(), myImage.getThrVal());
 	myImage.imgReformat(myImage.getThrAry(), 0, 1, outFile1);
+	
+	myImage.imgReformat(myImage.getThrAry(), 0, 1, outFile2);
+	
+
 	myImage.destroy2dArys();
 	outFile1.close();
 	outFile2.close();
