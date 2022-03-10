@@ -35,6 +35,9 @@ class Morphology {
 
 		this.zeroFramedAry = new int[this.numImgRows + 2][this.numImgCols + 2];
 		this.zero2DAry(this.zeroFramedAry, this.numImgRows + 2, this.numImgCols + 2);	
+		this.structAry = new int [this.numStructRows][this.numStructCols];
+		this.morphAry = new int [this.numImgRows + 2][this.numImgCols + 2];
+
 		for(int i = 0;i < this.numImgRows + 2;i++){
 			for(int j = 0;j < this.numImgCols + 2;j++){
 				System.out.print(zeroFramedAry[i][j] + " ");
@@ -72,12 +75,98 @@ class Morphology {
 
 	}
 
+	public void prettyPrint(int[][] array, FileWriter prettyPrintFile){
+		try {
+		for(int i = 0;i < this.numImgRows + 2;i++){
+			for(int j = 0;j < this.numImgCols + 2;j++){
+				if(array[i][j] == 0){
+					prettyPrintFile.write(". ");
+				}
+				else {
+					prettyPrintFile.write("1 ");
+				}
+			}
+			prettyPrintFile.write('\n');
+		}
+		} catch (IOException e) {
+			System.out.println("Error");
+			e.printStackTrace();
+		}
+	}
+
+	public void loadStruct(Scanner struct, int[][] structAry){
+		for(int i = 0;i < this.numStructRows;i++){
+			for(int j = 0;j < this.numStructCols;j++){
+				structAry[i][j] = struct.nextInt();
+			}
+		}	
+		
+		System.out.println();
+
+		for(int i = 0;i < this.numStructRows;i++){
+			for(int j = 0;j < this.numStructCols;j++){
+				System.out.print(structAry[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
+
+	public void computeDilation(int[][] inAry, int[][] outAry){
+		for(int i = 0;i < this.getImgRows() + 2;i++){
+			for(int j = 0;j < this.getImgCols() + 2;j++){
+				if(inAry[i][j] > 0){
+					this.onePixelDilation(i, j, this.getStructAry(), outAry);
+				}
+			}
+		}
+	}
+
+	public void onePixelDilation(int i,int j,int[][] inAry,int[][] outAry){
+		for(int k = 0;k < this.getNumStructRows();k++){
+			for(int z = 0;z < this.getNumStructCols();z++){
+				if(inAry[k][z] > 0){
+					outAry[i][j] = 1;
+				}
+				j++;
+			}
+			i++;
+		}	
+	}	
+
 	public int getRowOrigin(){
 		return this.rowOrigin;
 	}
 
 	public int getColOrigin(){
 		return this.colOrigin;
+	}
+
+	public int[][] getZeroFramedAry(){
+		return this.zeroFramedAry;
+	}
+
+	public int[][] getStructAry(){
+		return this.structAry;
+	}
+	
+	public int[][] getMorphAry(){
+		return this.morphAry;
+	}
+
+	public int getNumStructRows(){
+		return this.numStructRows;
+	}
+	
+	public int getNumStructCols(){
+		return this.numStructCols;
+	}
+	
+	public int getImgRows(){
+		return this.numImgRows;
+	}
+
+	public int getImgCols(){
+		return this.numImgCols;
 	}
 
 	public static void main(String args[]){
@@ -99,7 +188,15 @@ class Morphology {
 			
 			Morphology myMorph = new Morphology(inFile, structFile);
 			myMorph.loadImg(myMorph.getRowOrigin(), myMorph.getColOrigin(), inFile);
+			myMorph.prettyPrint(myMorph.getZeroFramedAry(), prettyPrintFile);	
 			
+			myMorph.zero2DAry(myMorph.getStructAry(), myMorph.getNumStructRows(), myMorph.getNumStructCols());	
+			myMorph.loadStruct(structFile, myMorph.getStructAry());
+
+			myMorph.zero2DAry(myMorph.getMorphAry(), myMorph.getImgRows(), myMorph.getImgCols());
+			myMorph.computeDilation(myMorph.getZeroFramedAry(), myMorph.getMorphAry());
+			myMorph.prettyPrint(myMorph.getMorphAry(), dialateOutFile);
+
 			dialateOutFile.close();
 			erodeOutFile.close();
 			openingOutFile.close();
