@@ -3,3 +3,4 @@
 ComputerVision/
 build/
 .DS_Store
+*.class
