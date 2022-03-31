@@ -306,27 +306,31 @@ class imageProcessing {
 
     public static void main(String args[]){
        System.out.println("Hello Thinning");
+       if(args.length < 3){
+           System.out.println("Expecting 3 arguments..");
+           System.exit(0);
+       }
        try{
            Scanner inFile = new Scanner(new FileReader(args[0]));
            FileWriter outFile1 = new FileWriter(args[1]);
            FileWriter outFile2 = new FileWriter(args[2]);
-           imageProcessing myThinning = new imageProcessing(inFile);
+           imageProcessing imgProcessor = new imageProcessing(inFile);
 
-           myThinning.zeroFrame();
-           myThinning.loadImg(inFile, myThinning.getAryOne());
-           myThinning.consolePrintAry(myThinning.getAryOne());
-           myThinning.setCycleCount(0);
-           myThinning.prettyPrint(myThinning.getAryTwo(), outFile2, 0);
-           myThinning.setChangeFlag(0);
+           imgProcessor.zeroFrame();
+           imgProcessor.loadImg(inFile, imgProcessor.getAryOne());
+           imgProcessor.consolePrintAry(imgProcessor.getAryOne());
+           imgProcessor.setCycleCount(0);
+           imgProcessor.prettyPrint(imgProcessor.getAryTwo(), outFile2, 0);
+           imgProcessor.setChangeFlag(0);
 
            do {
-               myThinning.thinning(myThinning.getAryOne(), myThinning.getAryTwo());
-               myThinning.incCycleCount();
-               myThinning.prettyPrint(myThinning.getAryTwo(), outFile2, myThinning.getCycleCount());
+               imgProcessor.thinning(imgProcessor.getAryOne(), imgProcessor.getAryTwo());
+               imgProcessor.incCycleCount();
+               imgProcessor.prettyPrint(imgProcessor.getAryTwo(), outFile2, imgProcessor.getCycleCount());
 
            }
-           while (myThinning.getChangeFlag() > 0);
-           myThinning.printAry(myThinning.getAryOne(), outFile1);
+           while (imgProcessor.getChangeFlag() > 0);
+           imgProcessor.printAry(imgProcessor.getAryOne(), outFile1);
            inFile.close();
            outFile1.close();
            outFile2.close();
